@@ -1,0 +1,42 @@
+
+// code 
+enter sizechart.liquid
+
+
+
+//Starting of schema
+
+{% render 'sizechart', sizechartImg: product.metafields.custom.sizechart.value %}
+
+
+
+---------------------------------
+
+
+//Use it on a product page (metafield image)
+
+If you already have a product metafield (e.g., product.metafields.custom.sizechart of type File/Image):
+
+Open your product template (usually Sections → main-product.liquid), or add a Custom liquid block in the Theme Editor on the product page.
+
+Add:
+
+{% render 'modal-image',
+  id: 'sizechart',
+  trigger_text: 'Find your Undertone',
+  image: product.metafields.custom.sizechart,
+  alt: 'Size chart'
+%}
+
+
+----------------------------------
+
+1st Code
+2nd Customize liquid
+3rd Render call to the page Product or page
+4rth the metafields adding metafield 
+
+or 
+
+built in Section use 
+
