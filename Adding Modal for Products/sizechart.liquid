@@ -1,55 +1,84 @@
-{%- comment -%}
-Reusable modal:
-Usage:
-{% render 'modal-image', id: 'sizechart', trigger_text: 'Size Guide', image: product.metafields.custom.sizechart %}
-or
-{% render 'modal-image', id: 'promo', trigger_text: 'View Size Chart', image: 'my-sizechart.png' | file_url %}
-Params:
-- id: unique id per instance (required if multiple on one page)
-- trigger_text: link text (optional; defaults to "View Image")
-- image: Shopify image object (metafield, product image, file_reference) OR a direct URL (file_url)
-- alt: optional alt text
-{%- endcomment -%}
-
-{%- assign mid = id | default: 'imgmodal' -%}
-{%- assign label = trigger_text | default: 'View Image' -%}
-{%- capture derived_url -%}{% if image %}{{ image | image_url: width: 1400 }}{% endif %}{%- endcapture -%}
-{%- assign img_src = derived_url | strip -%}
-{%- if img_src == '' and image -%}{%- assign img_src = image -%}{%- endif -%}
-
 <style>
   .imgmodal-trigger {
-    font: inherit; cursor: pointer; text-decoration: underline;
+    font: inherit;
+    cursor: pointer;
+    text-decoration: underline;
   }
+
   .imgmodal-overlay {
-    position: fixed; inset: 0; background: rgba(0,0,0,.7);
-    visibility: hidden; opacity: 0; transition: opacity .25s;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.7);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .25s;
     z-index: 9999;
+
+    /* Centering with flexbox */
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .imgmodal-overlay:target { visibility: visible; opacity: 1; }
+  .imgmodal-overlay:target {
+    visibility: visible;
+    opacity: 1;
+  }
+
   .imgmodal-popup {
-    position: relative; margin: 6rem auto; background: #fff;
-    width: 92%; max-width: 720px; border-radius: 12px; padding: 12px;
+    background: #fff;
+    width: 92%;
+    max-width: 720px;
+    border-radius: 12px;
+    padding: 12px;
     box-shadow: 0 12px 40px rgba(0,0,0,.35);
+    transition: all 0.3s ease-in-out;
+    position: relative;
   }
-  .imgmodal-popup img { width: 100%; height: auto; display: block; border-radius: 8px; }
+
+  .imgmodal-popup img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 8px;
+  }
+
   .imgmodal-close {
-    position: absolute; top: 8px; right: 12px; text-decoration: none;
-    font-size: 28px; line-height: 1; color: #111;
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 28px;
+    line-height: 1;
+    color: #111;
+    text-decoration: none;
+    cursor: pointer;
   }
+  .imgmodal-close:hover {
+    color: #d9d2c9;
+  }
+
+  /* Background close link */
+  .imgmodal-bgclose {
+    position: absolute;
+    inset: 0;
+    content: "";
+    display: none;
+  }
+  .imgmodal-overlay:target .imgmodal-bgclose {
+    display: block;
+  }
+
   @media (max-width: 700px) {
-    .imgmodal-popup { margin: 4rem auto; padding: 10px; }
+    .imgmodal-popup { padding: 10px; }
     .imgmodal-close { top: 6px; right: 10px; }
   }
 </style>
 
-{%- if img_src != blank -%}
-  <a class="imgmodal-trigger" href="#{{ mid }}-overlay">{{ label }}</a>
 
-  <div id="{{ mid }}-overlay" class="imgmodal-overlay">
-    <div class="imgmodal-popup" role="dialog" aria-modal="true" aria-label="{{ label }}">
-      <a class="imgmodal-close" href="#" aria-label="Close">×</a>
-      <img src="{{ img_src }}" alt="{{ alt | default: label }}" loading="lazy">
-    </div>
+
+<div id="sizepopup" class="overlay">
+  <div class="popup">
+    <img src="{{ sizechartImg | image_url }}" width="100%" height="100%">
+    <a class="close" href="#">X</a>
+    
   </div>
-{%- endif -%}
+</div>
