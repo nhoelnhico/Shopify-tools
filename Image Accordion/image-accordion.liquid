@@ -1,0 +1,186 @@
+{% comment %}
+  Image Accordion Section
+  - Accordion items with optional image inside
+  - Responsive and customizable
+  -updated code by Nhico Noel Ortazon September 24, 2025
+{% endcomment %}
+
+<section
+  class="image-accordion-section {% if section.settings.enable_margins %}section--with-margins{% endif %}"
+  style="padding-top:{{ section.settings.margin_top }}px;padding-bottom:{{ section.settings.margin_bottom }}px;"
+>
+  <div class="accordion-wrapper">
+    {% for block in section.blocks %}
+      <div class="accordion-item" data-accordion-item>
+        <button class="accordion-header" aria-expanded="false">
+          <span>{{ block.settings.title }}</span>
+          <svg class="icon-plus" width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 1v14M1 8h14" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+
+        <div class="accordion-content">
+          {% if block.settings.image %}
+            <div class="accordion-image">
+              {{ block.settings.image | image_url: width: 1200 | image_tag:
+                alt: block.settings.alt_text,
+                loading: 'lazy',
+                class: 'accordion-img',
+                widths: '400,600,800,1200',
+                sizes: '(min-width: 768px) 800px, 100vw'
+              }}
+            </div>
+          {% endif %}
+          <div class="accordion-text">
+            {{ block.settings.content }}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Image Accordion",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_margins",
+      "label": "Enable default margins",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "margin_top",
+      "label": "Top spacing (px)",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "label": "Bottom spacing (px)",
+      "min": 0,
+      "max": 150,
+      "step": 10,
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion_item",
+      "name": "Accordion Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Accordion Title"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Write your details here.</p>"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Optional Image"
+        },
+        {
+          "type": "text",
+          "id": "alt_text",
+          "label": "Image Alt Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Accordion",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.image-accordion-section {
+  width: 100%;
+}
+.section--with-margins {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: var(--page-width, 1200px);
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.accordion-wrapper {
+  border-top: 1px solid #ddd;
+}
+.accordion-item {
+  border-bottom: 1px solid #ddd;
+}
+.accordion-header {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding: 0 1rem;
+}
+.accordion-item.active .accordion-content {
+  padding-top: 1rem;
+  max-height: 1000px; /* large enough for most content */
+}
+.accordion-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+.accordion-text p {
+  margin-bottom: 1rem;
+}
+.icon-plus {
+  transition: transform 0.3s ease;
+}
+.accordion-item.active .icon-plus {
+  transform: rotate(45deg);
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', () => {
+  const accordionItems = document.querySelectorAll('[data-accordion-item]');
+  accordionItems.forEach(item => {
+    const header = item.querySelector('.accordion-header');
+    header.addEventListener('click', () => {
+      const open = item.classList.contains('active');
+      accordionItems.forEach(i => {
+        i.classList.remove('active');
+        i.querySelector('.accordion-header').setAttribute('aria-expanded', 'false');
+      });
+      if (!open) {
+        item.classList.add('active');
+        header.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+});
+{% endjavascript %}
