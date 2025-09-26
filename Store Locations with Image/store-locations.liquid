@@ -1,0 +1,174 @@
+{% comment %}
+  Updated Store Locations Code
+  - Store Location Update
+  - Responsive and customizable
+  -updated code by Nhico Noel Ortazon September 24, 2025
+{% endcomment %}
+
+{% schema %}
+{
+  "name": "Store Locations",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_heading",
+      "label": "Section Heading",
+      "default": "Our Stores"
+    },
+    {
+      "type": "range",
+      "id": "items_per_page",
+      "label": "Stores per page",
+      "min": 4,
+      "max": 20,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image Ratio",
+      "default": "adapt",
+      "options": [
+        { "value": "adapt", "label": "Original / Adapt to image" },
+        { "value": "square", "label": "Square (1:1)" },
+        { "value": "portrait", "label": "Portrait (3:4)" },
+        { "value": "landscape", "label": "Landscape (4:3)" },
+        { "value": "wide", "label": "Wide (16:9)" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "label": "Image Size (requested width)",
+      "min": 100,
+      "max": 600,
+      "step": 50,
+      "unit": "px",
+      "default": 400
+    }
+  ],
+  "blocks": [
+    {
+      "type": "store",
+      "name": "Store",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Store Image" },
+        { "type": "text", "id": "title", "label": "Store Name" },
+        { "type": "textarea", "id": "description", "label": "Description" },
+        { "type": "url", "id": "link", "label": "Link URL" }
+      ]
+    }
+  ],
+  "max_blocks": 100,
+  "presets": [
+    { "name": "Store Locations" }
+  ]
+}
+{% endschema %}
+
+<section id="store-locations" class="store-locations-section page-width">
+  <h2 class="section-title">{{ section.settings.section_heading }}</h2>
+
+  <!-- Search Bar -->
+  <input type="text" id="store-search" placeholder="Search stores..." class="store-search">
+
+  <div class="store-grid" data-items-per-page="{{ section.settings.items_per_page }}">
+    {% for block in section.blocks %}
+      {% assign ratio = section.settings.image_ratio %}
+      {% assign size  = section.settings.image_size %}
+      <div class="store-card" data-title="{{ block.settings.title | downcase }}">
+        <a href="{{ block.settings.link }}">
+          {% if block.settings.image %}
+            <div class="store-image-wrapper ratio-{{ ratio }}">
+              <img
+                src="{{ block.settings.image | image_url: width: size }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+                alt="{{ block.settings.title | escape }}"
+                class="store-image"
+                loading="lazy">
+            </div>
+          {% endif %}
+          <h3>{{ block.settings.title }}</h3>
+          <p>{{ block.settings.description }}</p>
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <button id="load-more" class="load-more">Load more</button>
+</section>
+
+{% stylesheet %}
+.store-search {
+  width: 100%;
+  padding: .75rem 1rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: .5rem;
+}
+.store-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+.store-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: .5rem;
+}
+.store-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: .5rem;
+}
+
+/* Aspect-ratio helpers */
+.ratio-square    { aspect-ratio: 1 / 1; }
+.ratio-portrait  { aspect-ratio: 3 / 4; }
+.ratio-landscape { aspect-ratio: 4 / 3; }
+.ratio-wide      { aspect-ratio: 16 / 9; }
+/* 'adapt' = no fixed ratio */
+.load-more {
+  margin-top: 2rem;
+  padding: .75rem 1.5rem;
+  border: none;
+  background: #000;
+  color: #fff;
+  border-radius: .5rem;
+  cursor: pointer;
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', function() {
+  const search   = document.getElementById('store-search');
+  const cards    = document.querySelectorAll('.store-card');
+  const grid     = document.querySelector('.store-grid');
+  const loadBtn  = document.getElementById('load-more');
+  const perPage  = parseInt(grid.dataset.itemsPerPage, 10);
+  let visible    = perPage;
+
+  function showCards() {
+    cards.forEach((c, i) => c.style.display = i < visible ? 'block' : 'none');
+    loadBtn.style.display = visible >= cards.length ? 'none' : 'inline-block';
+  }
+
+  showCards();
+
+  loadBtn.addEventListener('click', () => {
+    visible += perPage;
+    showCards();
+  });
+
+  search.addEventListener('input', () => {
+    const q = search.value.toLowerCase();
+    cards.forEach(c => {
+      const match = c.dataset.title.includes(q);
+      c.style.display = match ? 'block' : 'none';
+    });
+  });
+});
+{% endjavascript %}
