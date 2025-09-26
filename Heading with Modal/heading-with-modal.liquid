@@ -1,0 +1,186 @@
+{% comment %}
+ Heading With Modal
+  - Responsive and customizable
+  -updated code by Nhico Noel Ortazon September 24, 2025
+  
+  Section: Heading with Subheading + Modal Image
+  Features:
+  - Heading + Subheading text
+  - Alignment option: Left, Center, Right
+  - Button opens a modal with an image
+{% endcomment %}
+
+
+
+
+
+
+{% comment %}
+  Multi-Column Heading + Modal Image
+  Each block = one column with heading, subheading, button & modal image
+{% endcomment %}
+
+<section class="multi-heading-modal page-width">
+  <div class="multi-heading-grid columns-{{ section.settings.columns }}">
+    {% for block in section.blocks %}
+      <div class="multi-heading-item align-{{ block.settings.alignment }}">
+        {% if block.settings.heading != blank %}
+          <h2 class="multi-heading-title">{{ block.settings.heading }}</h2>
+        {% endif %}
+        {% if block.settings.subheading != blank %}
+          <p class="multi-heading-subtitle">{{ block.settings.subheading }}</p>
+        {% endif %}
+        {% if block.settings.button_label != blank and block.settings.modal_image != blank %}
+          <button
+            type="button"
+            class="multi-heading-btn"
+            data-modal-id="modal-{{ section.id }}-{{ block.id }}">
+            {{ block.settings.button_label }}
+          </button>
+        {% endif %}
+
+        {% if block.settings.modal_image != blank %}
+          <div id="modal-{{ section.id }}-{{ block.id }}" class="multi-heading-overlay">
+            <div class="multi-heading-content">
+              <button class="multi-heading-close" aria-label="Close">&times;</button>
+              <img
+                src="{{ block.settings.modal_image | image_url: width: 1200 }}"
+                alt="{{ block.settings.heading | escape }}"
+                loading="lazy"
+                width="{{ block.settings.modal_image.width }}"
+                height="{{ block.settings.modal_image.height }}"
+              >
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Multi-Column Modal",
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "Number of columns",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Column",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Column Heading" },
+        { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Column subheading text here." },
+        {
+          "type": "select",
+          "id": "alignment",
+          "label": "Text Alignment",
+          "options": [
+            { "value": "left", "label": "Left" },
+            { "value": "center", "label": "Center" },
+            { "value": "right", "label": "Right" }
+          ],
+          "default": "center"
+        },
+        { "type": "text", "id": "button_label", "label": "Button Label", "default": "View Image" },
+        { "type": "image_picker", "id": "modal_image", "label": "Modal Image" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Multi-Column Modal", "blocks": [ { "type": "column" }, { "type": "column" } ] }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.multi-heading-modal {
+  padding: 40px 0;
+}
+.multi-heading-grid {
+  display: grid;
+  gap: 2rem;
+}
+.columns-1 { grid-template-columns: 1fr; }
+.columns-2 { grid-template-columns: repeat(2, 1fr); }
+.columns-3 { grid-template-columns: repeat(3, 1fr); }
+.columns-4 { grid-template-columns: repeat(4, 1fr); }
+
+.multi-heading-item { text-align: center; }
+.align-left   { text-align: left; }
+.align-center { text-align: center; }
+.align-right  { text-align: right; }
+
+.multi-heading-title { font-size: 1.5rem; margin-bottom: 0.5rem; }
+.multi-heading-subtitle { font-size: 1rem; margin-bottom: 1rem; }
+.multi-heading-btn {
+  background: #000;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+/* Modal styles */
+.multi-heading-overlay {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+}
+.multi-heading-overlay.active { display: flex; }
+.multi-heading-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+.multi-heading-content img {
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+.multi-heading-close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #fff;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  border-radius: 50%;
+  line-height: 1;
+}
+{% endstylesheet %}
+
+{% javascript %}
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.multi-heading-btn').forEach(button => {
+    button.addEventListener('click', () => {
+      const modal = document.getElementById(button.dataset.modalId);
+      modal.classList.add('active');
+    });
+  });
+  document.querySelectorAll('.multi-heading-close').forEach(closeBtn => {
+    closeBtn.addEventListener('click', e => {
+      e.target.closest('.multi-heading-overlay').classList.remove('active');
+    });
+  });
+  document.querySelectorAll('.multi-heading-overlay').forEach(overlay => {
+    overlay.addEventListener('click', e => {
+      if (e.target === overlay) overlay.classList.remove('active');
+    });
+  });
+});
+{% endjavascript %}
