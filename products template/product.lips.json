@@ -1,0 +1,449 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product-shade",
+      "blocks": {
+        "6605e63c-7314-47ff-bef1-497466bb8c64": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<h1 class=\"product__title h2\" style=\"margin-bottom: -5px; !important;\">{{ product.title }}</h1>\n<div class=\"review-and-sold\">\n  <div class=\"review\">\n    {% render 'judgeme_widgets',\n      widget_type: 'judgeme_preview_badge',\n      jm_style: '',\n      concierge_install: true,\n      product: product\n    %}\n  </div>\n  <div class=\"sold\">\n    {% if product.metafields.custom.number_of_items_sold != blank %}\n      <div class=\"sold-number\">\n        <span class=\"tubes-sold\">{{ product.metafields.custom.number_of_items_sold }} items sold</span>\n      </div>\n    {% endif %}\n  </div>\n</div>\n<h1 class=\"product__title h2\">{{ product.metafields.custom.h1tag }}</h1>\n\n<style>\n  .review-and-sold {\n    display: flex;\n    align-items: center;\n    margin-bottom: 5px;\n  }\n  .review-and-sold .review {\n  }\n\n  .review-and-sold .review .jdgm-widget {\n  }\n\n  .review-and-sold .review .jdgm-widget .jdgm-prev-badge {\n    display: flex;\n    flex-direction: row;\n  }\n  .review-and-sold .review .jdgm-widget .jdgm-prev-badge .jdgm-prev-badge__text {\n    display: inline-block !important;\n    font-weight: 600;\n    color: #000 !important;\n  }\n\n  .review-and-sold .sold {\n    padding: 0px 10px;\n    display: flex;\n    margin-left: 10px;\n    flex-direction: row;\n    border-left: 2px solid #666;\n    padding-left: 10px;\n  }\n\n  .review-and-sold .sold .sold-number {\n    font-weight: bold;\n    margin-bottom: -6px;\n  }\n  @media screen and (max-width: 749px) {\n    .review-and-sold {\n      flex-direction: column;\n      align-items: flex-start;\n    }\n    .review-and-sold .sold {\n      border-left: none;\n      padding-left: 0px;\n      margin-left: 0px;\n    }\n</style>"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "custom_liquid_VygXD7": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'modal-image',\nid: 'sizechart',\ntrigger_text: 'Find your Undertone',\nimage: product.metafields.custom.sizechart,\nalt: 'Size chart'\n%}"
+          }
+        },
+        "judgeme_preview_badge_product_page_29607331": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "disabled": true,
+          "settings": {}
+        },
+        "9306d2cb-b1bf-4795-ad60-5b9d89a21dff": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<h4 class=\"short-description-title\">\n{{ product.metafields.custom.short_description_title }}\n</h4>"
+          }
+        },
+        "a86165b5-1428-4f46-9a28-8f1061d7d7a6": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "<div class=\"short-description-content\">\n{{ product.metafields.custom.short_description_content | metafield_tag }}\n</div>"
+          }
+        },
+        "6946856a-9524-40ec-a028-1d77ef2f48e8": {
+          "type": "custom_liquid",
+          "disabled": true,
+          "settings": {
+            "custom_liquid": "{% render 'buy-box-usp' %}"
+          }
+        },
+        "20ae0ef8-18a1-4df6-97b2-02387b827d1a": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% render 'buy-box-tabs' %}"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button"
+          }
+        },
+        "c56c79c1-8c45-4005-8339-9ecc6ab61ad9": {
+          "type": "complementary",
+          "disabled": true,
+          "settings": {
+            "block_heading": "Any 4 for P749",
+            "make_collapsible_row": true,
+            "icon": "price_tag",
+            "product_list_limit": 10,
+            "products_per_page": 3,
+            "pagination_style": "dots",
+            "image_ratio": "square",
+            "enable_quick_add": false
+          }
+        }
+      },
+      "block_order": [
+        "6605e63c-7314-47ff-bef1-497466bb8c64",
+        "price",
+        "custom_liquid_VygXD7",
+        "judgeme_preview_badge_product_page_29607331",
+        "9306d2cb-b1bf-4795-ad60-5b9d89a21dff",
+        "a86165b5-1428-4f46-9a28-8f1061d7d7a6",
+        "6946856a-9524-40ec-a028-1d77ef2f48e8",
+        "20ae0ef8-18a1-4df6-97b2-02387b827d1a",
+        "quantity_selector",
+        "variant_picker",
+        "c56c79c1-8c45-4005-8339-9ecc6ab61ad9"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "media_size": "small",
+        "constrain_to_viewport": true,
+        "media_fit": "cover",
+        "gallery_layout": "thumbnail_slider",
+        "media_position": "left",
+        "image_zoom": "hover",
+        "mobile_thumbnails": "show",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "judgeme_section_review_widget_21e1": {
+      "type": "apps",
+      "blocks": {
+        "judgeme_review_widget_68887430": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1200
+          }
+        }
+      },
+      "block_order": [
+        "judgeme_review_widget_68887430"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    },
+    "fa3d8f00-c1b4-4b26-adac-c1a9f7f40893": {
+      "type": "goal-getters-videos",
+      "blocks": {
+        "23f42219-20eb-4a5b-9d71-b560aa880064": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Isaa.jpg",
+            "title": "",
+            "text": "",
+            "link_label": "@issaborromeo",
+            "link": "https://cdn.shopify.com/videos/c/o/v/c8e11de784164bb280b5dc09b734c774.mp4"
+          }
+        },
+        "template--18767031075117__fa3d8f00-c1b4-4b26-adac-c1a9f7f40893-16818998631e5c7d9f-2": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/Cate.jpg",
+            "title": "",
+            "text": "",
+            "link_label": "@catetobias",
+            "link": "https://cdn.shopify.com/videos/c/o/v/8fdec91a6b24463ea44765c4069d262f.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "23f42219-20eb-4a5b-9d71-b560aa880064",
+        "template--18767031075117__fa3d8f00-c1b4-4b26-adac-c1a9f7f40893-16818998631e5c7d9f-2"
+      ],
+      "settings": {
+        "custom_class": "first-impressions",
+        "title": "First impressions & reviews",
+        "subtitle": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 4,
+        "column_alignment": "center",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "background-1",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "settings": {
+        "custom_class": "recommended-products",
+        "heading": "Pair it with",
+        "heading_size": "h2",
+        "products_to_show": 10,
+        "columns_desktop": 5,
+        "color_scheme": "background-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "columns_mobile": "1",
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "11291351-f9d1-4186-a405-502142fd972c": {
+      "type": "goal-getters-videos",
+      "blocks": {
+        "e6bbf63c-cdfb-41bf-8886-cb39634219d8": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/jnygvra_cover.png",
+            "title": "",
+            "text": "",
+            "link_label": "@jnygvra",
+            "link": "https://cdn.shopify.com/videos/c/o/v/a0fb5cfb271246da8e8f60384bfb0067.mp4"
+          }
+        },
+        "c57c5e6c-2ae0-47b5-99ea-cdf6afb941d7": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/c_llenes_cover.png",
+            "title": "",
+            "text": "",
+            "link_label": "@c_llenes",
+            "link": "https://cdn.shopify.com/videos/c/o/v/a841e0713a4e42f2b915ae601eff488e.mp4"
+          }
+        },
+        "0840f5be-b391-475b-93c0-26e36114c9de": {
+          "type": "column",
+          "settings": {
+            "title": "",
+            "text": "",
+            "link_label": "@krishabala",
+            "link": "https://cdn.shopify.com/videos/c/o/v/96e98e7cdecd48b7a5ea249f7e9e0f94.mp4"
+          }
+        },
+        "f6e8c806-364f-4db4-b5e2-b1bfd8ce5c74": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ampagatpatan_cover.png",
+            "title": "",
+            "text": "",
+            "link_label": "@ampagatpatann",
+            "link": "https://cdn.shopify.com/videos/c/o/v/296fdbb4fa9249159eee387310d63e1a.mp4"
+          }
+        },
+        "template--18554097664301__27678888-2461-446e-a140-51b157a3bbef-1681784949c6e9ef88-1": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/ysabelgail-cover.png",
+            "title": "",
+            "text": "",
+            "link_label": "@ysabelgail",
+            "link": "https://cdn.shopify.com/videos/c/o/v/972cd36785c64659ab1ffb3791ba92b3.mp4"
+          }
+        },
+        "217306ae-4ffc-4f52-958a-fbf7c39e51c6": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/missaicadominic-cover.png",
+            "title": "",
+            "text": "",
+            "link_label": "@missaicadominic",
+            "link": "https://cdn.shopify.com/videos/c/o/v/120bf4a095264516b8e9322d6406ce78.mp4"
+          }
+        },
+        "7f76e47d-9479-49c2-be85-865979cda810": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/sticohh-cover.png",
+            "title": "",
+            "text": "",
+            "link_label": "@sticohh",
+            "link": "https://cdn.shopify.com/videos/c/o/v/e8cb0d19b5d24aed8e26bc1255188582.mp4"
+          }
+        },
+        "template--18554097664301__27678888-2461-446e-a140-51b157a3bbef-1681784949c6e9ef88-0": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/jozelle.png",
+            "title": "",
+            "text": "",
+            "link_label": "@joselle_alandy",
+            "link": "https://cdn.shopify.com/videos/c/o/v/53b4ec6caee949eba2b58fb2121fed38.mp4"
+          }
+        },
+        "77e58848-4102-4de4-bc49-f80675ad44a4": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/pat.png",
+            "title": "",
+            "text": "",
+            "link_label": "@patwijangco",
+            "link": "https://cdn.shopify.com/videos/c/o/v/716361571db6410887262375f0255d52.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "e6bbf63c-cdfb-41bf-8886-cb39634219d8",
+        "c57c5e6c-2ae0-47b5-99ea-cdf6afb941d7",
+        "0840f5be-b391-475b-93c0-26e36114c9de",
+        "f6e8c806-364f-4db4-b5e2-b1bfd8ce5c74",
+        "template--18554097664301__27678888-2461-446e-a140-51b157a3bbef-1681784949c6e9ef88-1",
+        "217306ae-4ffc-4f52-958a-fbf7c39e51c6",
+        "7f76e47d-9479-49c2-be85-865979cda810",
+        "template--18554097664301__27678888-2461-446e-a140-51b157a3bbef-1681784949c6e9ef88-0",
+        "77e58848-4102-4de4-bc49-f80675ad44a4"
+      ],
+      "disabled": true,
+      "settings": {
+        "custom_class": "goal-getters",
+        "title": "Your Community",
+        "subtitle": "Goal-getters in the spotlight...",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 4,
+        "column_alignment": "center",
+        "background_style": "none",
+        "button_label": "",
+        "button_link": "",
+        "color_scheme": "background-1",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "586530cb-176d-48f9-b467-2f08d3b4d62d": {
+      "type": "logos-list",
+      "blocks": {
+        "template--18767031075117__586530cb-176d-48f9-b467-2f08d3b4d62d-16819031689d6327f0-0": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/lofficiel-vector-logo.png",
+            "text": "",
+            "icon_width": 128
+          }
+        },
+        "template--18767031075117__586530cb-176d-48f9-b467-2f08d3b4d62d-16819031689d6327f0-1": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/cnn.png",
+            "text": "",
+            "icon_width": 75
+          }
+        },
+        "template--18767031075117__586530cb-176d-48f9-b467-2f08d3b4d62d-16819031689d6327f0-2": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/spot.png",
+            "text": "",
+            "icon_width": 90
+          }
+        },
+        "cd610a55-0d3a-4cb8-8efa-7bb5004892a8": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/mega.png",
+            "text": "",
+            "icon_width": 85
+          }
+        },
+        "794824a1-1c6a-40e7-9877-5ad676a83f36": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/preview.png",
+            "text": "",
+            "icon_width": 100
+          }
+        },
+        "296bde88-7af7-4066-9900-9d2070b4fa78": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/nylon.png",
+            "text": "",
+            "icon_width": 101
+          }
+        },
+        "deac27f4-e44b-4149-93ea-f3553def76c3": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/abs-cbn.png",
+            "text": "",
+            "icon_width": 122
+          }
+        },
+        "07d9c311-ac85-4f74-b86e-377da6bcd55b": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/philstar.png",
+            "text": "",
+            "icon_width": 83
+          }
+        },
+        "c26f4030-368d-446e-b599-d1f8101cb57e": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/candy.png",
+            "text": "",
+            "icon_width": 97
+          }
+        },
+        "5511316e-b110-4b80-8832-6b1338b10be8": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/villagepipol.png",
+            "text": "",
+            "icon_width": 113
+          }
+        },
+        "9955ec7a-9225-4971-8e06-5b4f000095a9": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/inq.png",
+            "text": "",
+            "icon_width": 66
+          }
+        },
+        "c4055b63-6ae6-4bbe-a3b7-d1c1f7279186": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/global.png",
+            "text": "",
+            "icon_width": 88
+          }
+        }
+      },
+      "block_order": [
+        "template--18767031075117__586530cb-176d-48f9-b467-2f08d3b4d62d-16819031689d6327f0-0",
+        "template--18767031075117__586530cb-176d-48f9-b467-2f08d3b4d62d-16819031689d6327f0-1",
+        "template--18767031075117__586530cb-176d-48f9-b467-2f08d3b4d62d-16819031689d6327f0-2",
+        "cd610a55-0d3a-4cb8-8efa-7bb5004892a8",
+        "794824a1-1c6a-40e7-9877-5ad676a83f36",
+        "296bde88-7af7-4066-9900-9d2070b4fa78",
+        "deac27f4-e44b-4149-93ea-f3553def76c3",
+        "07d9c311-ac85-4f74-b86e-377da6bcd55b",
+        "c26f4030-368d-446e-b599-d1f8101cb57e",
+        "5511316e-b110-4b80-8832-6b1338b10be8",
+        "9955ec7a-9225-4971-8e06-5b4f000095a9",
+        "c4055b63-6ae6-4bbe-a3b7-d1c1f7279186"
+      ],
+      "settings": {
+        "title": "as featured in"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "judgeme_section_review_widget_21e1",
+    "fa3d8f00-c1b4-4b26-adac-c1a9f7f40893",
+    "related-products",
+    "11291351-f9d1-4186-a405-502142fd972c",
+    "586530cb-176d-48f9-b467-2f08d3b4d62d"
+  ]
+}
