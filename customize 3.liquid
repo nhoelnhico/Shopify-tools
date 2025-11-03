@@ -1,0 +1,241 @@
+<div id="palette-builder" style="text-align:center;">
+  <h3>Customize Your Palette </h3>
+
+  <div style="position:relative; display:inline-block; margin-top:10px;">
+    <img id="palette-base"
+         src="https://cdn.shopify.com/s/files/1/0742/8069/8157/files/palette_base.png?v=1762137293"
+         style="width:300px; border-radius:10px;">
+    <div id="pan-container"></div>
+  </div>
+
+  <!-- Shade picker popup -->
+  <div id="shade-popup" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%);
+      background:white; border-radius:10px; padding:15px; box-shadow:0 0 15px rgba(0,0,0,0.3); z-index:999;">
+    <h4 style="margin-bottom:10px;">Select a Shade</h4>
+    <div id="shade-list" style="display:flex; flex-wrap:wrap; gap:10px; justify-content:center;"></div>
+    <button onclick="closePopup()" style="margin-top:10px; background:#333; color:white; border:none; padding:6px 12px; border-radius:5px; cursor:pointer;">Close</button>
+  </div>
+</div>
+
+<script>
+const shadeImages = [
+  { name: "Milk Bread", url: "https://cdn.shopify.com/s/files/1/0742/8069/8157/files/Milk_bread_Airset_matte_powder.png?v=1733124576", price: 120 },
+  { name: "Shortcake", url: "https://cdn.shopify.com/s/files/1/0742/8069/8157/files/Shortcake_Airset_matte_powder.png?v=1733124577", price: 120 },
+  { name: "Pretzel", url: "https://cdn.shopify.com/s/files/1/0742/8069/8157/files/Pretzel_Airset_matte_powder.png?v=1733124577", price: 120 },
+  { name: "Tart", url: "https://cdn.shopify.com/s/files/1/0742/8069/8157/files/Tart_Airset_matte_powder.png?v=1733124577", price: 120 },
+  { name: "Major Glow", url: "https://cdn.shopify.com/s/files/1/0742/8069/8157/files/major_glow_pressed.png?v=1733279560", price: 150 }
+];
+
+const container = document.getElementById("pan-container");
+const popup = document.getElementById("shade-popup");
+const shadeList = document.getElementById("shade-list");
+const priceDisplay = document.getElementById("palette-price");
+const addToCartBtn = document.getElementById("add-to-cart");
+
+let selectedPan = null;
+let selectedShades = {};
+
+// consistent image style
+function applyPanImageStyle(img) {
+  img.style.width = "100%";
+  img.style.height = "100%";
+  img.style.objectFit = "cover"; // ✅ fills entire space, looks flush inside pan
+  img.style.borderRadius = "4px";
+  img.style.background = "#f6f6f6";
+  img.style.cursor = "pointer";
+  img.style.display = "block";
+}
+
+// container grid (unchanged)
+container.style.position = "absolute";
+container.style.top = "25px";
+container.style.left = "25px";
+container.style.width = "250px";
+container.style.height = "250px";
+container.style.display = "grid";
+container.style.gridTemplateColumns = "repeat(2, 1fr)";
+container.style.gap = "10px";
+
+// create 4 main slots
+for (let i = 0; i < 4; i++) {
+  const slot = document.createElement("div");
+  slot.classList.add("pan-slot");
+  slot.id = `pan-${i + 1}`;
+  slot.dataset.mode = "big";
+  slot.style.position = "relative";
+  slot.style.width = "120px";
+  slot.style.height = "120px";
+  slot.style.border = "none";
+  slot.style.borderRadius = "8px";
+  slot.style.overflow = "hidden";
+  slot.style.background = "transparent";
+
+  // big pan
+  const bigPan = document.createElement("img");
+  applyPanImageStyle(bigPan);
+  bigPan.onclick = (e) => {
+    e.stopPropagation();
+    selectedPan = bigPan;
+    openPopup(slot.id);
+  };
+  slot.appendChild(bigPan);
+
+  // 4 small pans (no gap)
+  const smallGrid = document.createElement("div");
+  smallGrid.style.position = "absolute";
+  smallGrid.style.top = "0";
+  smallGrid.style.left = "0";
+  smallGrid.style.width = "100%";
+  smallGrid.style.height = "100%";
+  smallGrid.style.display = "none";
+  smallGrid.style.gridTemplateColumns = "repeat(2, 1fr)";
+  smallGrid.style.gap = "0"; // ✅ removed all gap
+  smallGrid.style.padding = "0";
+
+  for (let j = 0; j < 4; j++) {
+    const mini = document.createElement("img");
+    applyPanImageStyle(mini);
+    mini.dataset.id = `small-${i + 1}-${j + 1}`;
+    mini.onclick = (e) => {
+      e.stopPropagation();
+      selectedPan = mini;
+      openPopup(slot.id);
+    };
+    smallGrid.appendChild(mini);
+  }
+  slot.appendChild(smallGrid);
+
+  // 2 vertical pans (no gap)
+  const verticalGrid = document.createElement("div");
+  verticalGrid.style.position = "absolute";
+  verticalGrid.style.top = "0";
+  verticalGrid.style.left = "0";
+  verticalGrid.style.width = "100%";
+  verticalGrid.style.height = "100%";
+  verticalGrid.style.display = "none";
+  verticalGrid.style.gridTemplateRows = "repeat(2, 1fr)";
+  verticalGrid.style.gap = "0"; // ✅ no gap between verticals
+  verticalGrid.style.padding = "0";
+
+  for (let k = 0; k < 2; k++) {
+    const vert = document.createElement("img");
+    applyPanImageStyle(vert);
+    vert.dataset.id = `vertical-${i + 1}-${k + 1}`;
+    vert.onclick = (e) => {
+      e.stopPropagation();
+      selectedPan = vert;
+      openPopup(slot.id);
+    };
+    verticalGrid.appendChild(vert);
+  }
+  slot.appendChild(verticalGrid);
+
+  // 🔄 resize button
+  const resizeBtn = document.createElement("button");
+  resizeBtn.innerHTML = "🔄";
+  resizeBtn.style.position = "absolute";
+  resizeBtn.style.bottom = "5px";
+  resizeBtn.style.right = "5px";
+  resizeBtn.style.border = "none";
+  resizeBtn.style.background = "white";
+  resizeBtn.style.borderRadius = "5px";
+  resizeBtn.style.padding = "4px";
+  resizeBtn.style.cursor = "pointer";
+  resizeBtn.style.fontSize = "16px";
+  resizeBtn.onclick = (e) => {
+    e.stopPropagation();
+    togglePanMode(slot, bigPan, smallGrid, verticalGrid);
+  };
+  slot.appendChild(resizeBtn);
+
+  container.appendChild(slot);
+}
+
+// 🌀 Mode Toggle (visual)
+function togglePanMode(slot, big, small, vertical) {
+  if (slot.dataset.mode === "big") {
+    slot.dataset.mode = "small";
+    big.style.display = "none";
+    small.style.display = "grid";
+    vertical.style.display = "none";
+  } else if (slot.dataset.mode === "small") {
+    slot.dataset.mode = "vertical";
+    big.style.display = "none";
+    small.style.display = "none";
+    vertical.style.display = "grid";
+  } else {
+    slot.dataset.mode = "big";
+    big.style.display = "block";
+    small.style.display = "none";
+    vertical.style.display = "none";
+  }
+}
+
+// 🎨 Popup Shade Picker
+function openPopup(panId) {
+  shadeList.innerHTML = "";
+  shadeImages.forEach(shade => {
+    const img = document.createElement("img");
+    img.src = shade.url;
+    img.alt = shade.name;
+    img.style.width = "60px";
+    img.style.height = "60px";
+    img.style.borderRadius = "8px";
+    img.style.cursor = "pointer";
+    img.style.border = "1px solid #ddd";
+    img.title = `${shade.name} (₱${shade.price})`;
+    img.onclick = () => {
+      selectedPan.src = shade.url;
+      selectedShades[panId] = shade;
+      closePopup();
+      updatePrice();
+    };
+    shadeList.appendChild(img);
+  });
+  popup.style.display = "block";
+}
+function closePopup() { popup.style.display = "none"; }
+
+// 💰 Update Total Price
+function updatePrice() {
+  const total = Object.values(selectedShades).reduce((sum, s) => sum + s.price, 0);
+  priceDisplay.textContent = `💵 Total: ₱${total.toLocaleString()}`;
+}
+
+// 🛒 Add to Cart
+addToCartBtn.addEventListener("click", async () => {
+  const totalPrice = Object.values(selectedShades).reduce((sum, s) => sum + s.price, 0);
+  if (Object.keys(selectedShades).length === 0) {
+    alert("Please select at least one shade before adding to cart.");
+    return;
+  }
+
+  const properties = {};
+  Object.keys(selectedShades).forEach((pan, index) => {
+    const s = selectedShades[pan];
+    properties[`Pan ${index + 1}`] = s.name;
+  });
+  properties["Total Price"] = `₱${totalPrice.toLocaleString()}`;
+
+  try {
+    const response = await fetch("/cart/add.js", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        id: {{ product.variants.first.id }},
+        quantity: 1,
+        properties: properties
+      })
+    });
+    if (response.ok) {
+      alert("🎉 Palette added to your cart!");
+      location.reload();
+    } else {
+      alert("Something went wrong adding to cart.");
+    }
+  } catch (err) {
+    console.error("Add to cart error:", err);
+    alert("Error adding to cart.");
+  }
+});
+</script>

@@ -1,0 +1,173 @@
+<!-- 🎨 LIVE REAL-TIME PALETTE BUILDER -->
+<div id="custom-palette" style="text-align:center; margin-top:20px;">
+  <h3 style="font-weight:600; margin-bottom:10px;">Customize Your Palette (Mix Big + Small + Vertical)</h3>
+
+  <div id="palette-wrapper" style="position:relative; display:inline-block;">
+    <!-- Background palette image -->
+    <img src="https://cdn.shopify.com/s/files/1/0742/8069/8157/files/palette_base.png?v=1762137293"
+         alt="Palette Base"
+         style="width:320px; border-radius:10px;">
+    
+    <div id="palette-container" style="
+        position:absolute;
+        top:25px; left:25px;
+        display:grid;
+        grid-template-columns:repeat(2, 1fr);
+        gap:10px;
+        width:270px; height:270px;">
+    </div>
+  </div>
+</div>
+
+<style>
+.pan-slot {
+  position: relative;
+  width: 130px;
+  height: 130px;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.pan-slot:hover { transform: scale(1.05); border-color: #444; }
+
+.small-grid, .vertical-grid {
+  display: none;
+  width: 100%;
+  height: 100%;
+  gap: 4px;
+  padding: 4px;
+}
+.small-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+.vertical-grid {
+  grid-template-rows: repeat(2, 1fr);
+}
+.small-grid img, .vertical-grid img, .pan-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 6px;
+  background: #f9f9f9;
+}
+.resize-btn {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: #fff;
+  border: 1px solid #aaa;
+  border-radius: 5px;
+  padding: 3px 5px;
+  cursor: pointer;
+  font-size: 13px;
+}
+</style>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById("palette-container");
+
+  // Build 4 main pans
+  for (let i = 0; i < 4; i++) {
+    const slot = document.createElement("div");
+    slot.className = "pan-slot";
+    slot.dataset.mode = "big";
+
+    const big = document.createElement("img");
+    slot.appendChild(big);
+
+    const smallGrid = document.createElement("div");
+    smallGrid.className = "small-grid";
+    for (let j = 0; j < 4; j++) {
+      const mini = document.createElement("img");
+      mini.dataset.id = `small-${i + 1}-${j + 1}`;
+      smallGrid.appendChild(mini);
+    }
+    slot.appendChild(smallGrid);
+
+    const verticalGrid = document.createElement("div");
+    verticalGrid.className = "vertical-grid";
+    for (let k = 0; k < 2; k++) {
+      const vert = document.createElement("img");
+      vert.dataset.id = `vertical-${i + 1}-${k + 1}`;
+      verticalGrid.appendChild(vert);
+    }
+    slot.appendChild(verticalGrid);
+
+    const resizeBtn = document.createElement("button");
+    resizeBtn.className = "resize-btn";
+    resizeBtn.textContent = "🔄";
+    resizeBtn.title = "Switch layout";
+    resizeBtn.onclick = (e) => {
+      e.stopPropagation();
+      toggleLayout(slot, big, smallGrid, verticalGrid);
+    };
+    slot.appendChild(resizeBtn);
+
+    container.appendChild(slot);
+  }
+
+  function toggleLayout(slot, big, small, vertical) {
+    if (slot.dataset.mode === "big") {
+      slot.dataset.mode = "small";
+      big.style.display = "none";
+      small.style.display = "grid";
+      vertical.style.display = "none";
+    } else if (slot.dataset.mode === "small") {
+      slot.dataset.mode = "vertical";
+      big.style.display = "none";
+      small.style.display = "none";
+      vertical.style.display = "grid";
+    } else {
+      slot.dataset.mode = "big";
+      big.style.display = "block";
+      small.style.display = "none";
+      vertical.style.display = "none";
+    }
+  }
+
+  // ✅ Wait for King Product Options to appear
+  function waitForKingOptions(callback) {
+    const check = setInterval(() => {
+      if (document.querySelectorAll(".kingapp-option-image").length > 0) {
+        clearInterval(check);
+        callback();
+      }
+    }, 500);
+  }
+
+  waitForKingOptions(() => {
+    console.log("✅ King Product Options ready, live palette connected.");
+
+    const panMap = {
+      "Pan 1": container.children[0],
+      "Pan 2": container.children[1],
+      "Pan 3": container.children[2],
+      "Pan 4": container.children[3],
+    };
+
+    document.body.addEventListener("click", (e) => {
+      const optionImage = e.target.closest(".kingapp-option-image");
+      if (!optionImage) return;
+
+      const optionItem = optionImage.closest(".kingapp-option-item");
+      const label = optionItem?.querySelector(".kingapp-option-label")?.textContent?.trim();
+      const img = optionImage.querySelector("img")?.src;
+      const targetSlot = panMap[label];
+
+      if (targetSlot && img) {
+        const mode = targetSlot.dataset.mode;
+        if (mode === "big") {
+          targetSlot.querySelector("img").src = img;
+        } else if (mode === "small") {
+          targetSlot.querySelectorAll(".small-grid img").forEach(el => el.src = img);
+        } else if (mode === "vertical") {
+          targetSlot.querySelectorAll(".vertical-grid img").forEach(el => el.src = img);
+        }
+      }
+    });
+  });
+});
+</script>
